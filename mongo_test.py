@@ -14,7 +14,7 @@ except Exception as e:
 
 
 db = client["HackShef9"]
-collection = db["coins"]
+collection = db["datapoints"]
 
-data = {"name":"coin1", "image":"test1"}
+data = {"name":"coin1", "value":0.1, "timestamp": "jeff"}
 collection.insert_one(data)
