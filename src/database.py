@@ -21,7 +21,12 @@ datapoints_collection = db["datapoints"]
 
 # @st.cache_resource
 def fetch_coin_metadata():
-    return list(coins_collection.find({}, {'_id': False}))
+    metadata = list(coins_collection.find({}, {'_id': False}))
+
+    for coin in metadata:
+        coin["image_b64"] = "data:image/png;base64," + coin["image_b64"]
+
+    return metadata
 
 def fetch_coin_datapoints():
     return list(datapoints_collection.find({}))
