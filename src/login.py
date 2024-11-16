@@ -20,6 +20,7 @@ st.title("Login Form")
 
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
+st.page_link("signup.py", label="No Account? Get Started")
 
 if st.button("Login"):
     if username and password:
