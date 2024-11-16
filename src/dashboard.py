@@ -1,6 +1,8 @@
 import streamlit as st
 import common
 import database
+import pandas as pd
+import plotly.express as px
 
 common.header()
 
@@ -23,6 +25,10 @@ def update_user_balance(username, amount):
 # Function to get user investments
 def get_user_investments(username):
     return list(investments_collection.find({"username": username}))
+
+# Function to fetch coin data points
+def fetch_coin_data(coin):
+    return list(datapoints_collection.find({"coin": coin}).sort("time", 1))
 
 # Streamlit dashboard
 st.title("Dashboard")
@@ -47,6 +53,16 @@ if "username" in st.session_state:
                 units = amount / invested_value
                 current_worth = units * current_value
                 st.write(f"{coin}: Invested USD ${amount:.2f} at ${invested_value:.7f} per unit, Current worth: ${current_worth:.2f}")
+
+                # Fetch coin data points
+                coin_data = fetch_coin_data(coin)
+                df = pd.DataFrame(coin_data)
+                df['time'] = pd.to_datetime(df['time'])
+                df['investment_value'] = df['value'] * units
+
+                # Create a line chart
+                fig = px.line(df, x='time', y='investment_value', title=f'{coin} Investment Value Over Time')
+                st.plotly_chart(fig)
 
         # Form to add funds
         st.subheader("Add Funds")
