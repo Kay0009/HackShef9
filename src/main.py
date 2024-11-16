@@ -6,6 +6,8 @@ pg = st.navigation(
     [
         st.Page("index.py"),
         st.Page("dashboard.py"),
+        st.Page("invest.py"),
+        st.Page("sell.py"),
         st.Page("markets.py"),
         st.Page("signup.py"),
         st.Page("login.py"),

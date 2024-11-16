@@ -1,9 +1,6 @@
 import streamlit as st
-import common
 import pandas as pd
 import database
-
-common.header()
 
 users = database.get_client()["users"]
 datapoints_collection = database.get_client()["datapoints"]
@@ -25,15 +22,18 @@ def update_user_balance(username, amount):
 def get_user_investments(username):
     return list(investments_collection.find({"username": username}))
 
-# Streamlit dashboard
-st.title("Dashboard")
+# Function to remove an investment
+def remove_investment(investment_id):
+    investments_collection.delete_one({"_id": investment_id})
+
+# Streamlit selling page
+st.title("Sell Your Investments")
 
 if "username" in st.session_state:
     username = st.session_state["username"]
     balance = get_user_balance(username)
 
     if balance is not None:
-        st.write(f"Hello, {username}!")
         st.write(f"Your balance is: ${balance:.2f} USD")
 
         # Display user investments
@@ -47,22 +47,12 @@ if "username" in st.session_state:
                 current_value = datapoints_collection.find_one({"coin": coin}, sort=[("timestamp", -1)])["value"]
                 current_worth = (amount / invested_value) * current_value
                 st.write(f"{coin}: Invested ${amount:.2f} at ${invested_value:.2f} per unit, Current worth: ${current_worth:.2f}")
-
-        # Form to add funds
-        st.subheader("Add Funds")
-        amount = st.number_input("Amount to add", min_value=0.0, step=0.01)
-        if st.button("Add Funds"):
-            update_user_balance(username, amount)
-            st.success(f"${amount:.2f} added to your account.")
-            st.rerun()
+                if st.button(f"Sell {coin}"):
+                    update_user_balance(username, current_worth)
+                    remove_investment(investment["_id"])
+                    st.success(f"Sold {coin} for ${current_worth:.2f}.")
+                    st.rerun()
     else:
         st.error("User not found.")
-
-    # Logout button
-    if st.button("Logout"):
-        del st.session_state["username"]
-        st.rerun()
 else:
     st.error("You need to login first.")
-
-common.footer()
