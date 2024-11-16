@@ -34,6 +34,6 @@ def fetch_joined_coin_datapoints():
     metadata = fetch_coin_metadata()
 
     for coin in metadata:
-        coin["datapoints"] = list(datapoints_collection.find({"coin": coin["name"]}, {"_id": 0, "coin": 0}))
+        coin["datapoints"] = list(get_client()["datapoints"].find({"coin": coin["name"]}, {"_id": 0, "coin": 0}))
 
     return metadata

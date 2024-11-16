@@ -78,6 +78,7 @@ if __name__ == "__main__":
 
     db = client["HackShef9"]
     datapoints_collection = db["datapoints"]
+    coins_collection = db["coins"]
 
     def fetch_and_store_data():
         for asset in supported_assets:
@@ -91,6 +92,14 @@ if __name__ == "__main__":
                     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     print(price, asset_symbol, timestamp)
                     datapoint = {"coin": asset_symbol, "value": price, "time": timestamp}
+
+                    change = data["data"]["item"]["specificData"]["24HoursPriceChangeInPercentage"]
+                    print(change)
+                    result = coins_collection.update_one(
+                    {"name": asset_symbol}, 
+                    {"$set": {"24hr_change": change}}  
+                    )
+
                     datapoints_collection.insert_one(datapoint)
                     print("Successfully added datapoint to the database")
                 else:
