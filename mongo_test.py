@@ -11,3 +11,10 @@ try:
     print("Pinged your deployment. You successfully connected to MongoDB!")
 except Exception as e:
     print(e)
+
+
+db = client["HackShef9"]
+collection = db["coins"]
+
+data = {"name":"coin1", "image":"test1"}
+collection.insert_one(data)
