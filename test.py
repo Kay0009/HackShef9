@@ -73,7 +73,6 @@ def get_asset_images(asset_symbols):
             print(f"Request failed with status code {response.status_code}: {response.text}")
         
 
-
 def display_image(b64):
     # Decode the Base64 string
     image_data = base64.b64decode(b64)
