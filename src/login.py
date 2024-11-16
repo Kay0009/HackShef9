@@ -32,8 +32,3 @@ if st.button("Login"):
             st.error("Invalid username or password.")
     else:
         st.error("Please fill in all fields.")
-
-# Redirect to dashboard if logged in
-if "username" in st.session_state:
-    st.write("Redirecting to dashboard...")
-    st.experimental_set_query_params(page="dashboard")
