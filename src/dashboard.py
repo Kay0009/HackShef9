@@ -2,23 +2,16 @@ import streamlit as st
 import common
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
-from dotenv import load_dotenv
 import os
+import database
+
+users = database.get_client()["users"] 
 
 common.header()
 
-# Connect to MongoDB Atlas
-database_uri = "mongodb+srv://freddy:1234@hackshef9.ukauu.mongodb.net/?retryWrites=true&w=majority&appName=HackShef9"
-client = MongoClient(database_uri, server_api=ServerApi('1'))
-
-# Access the database and collection
-db = client["HackShef9"]
-users_collection = db["users"]
-
-
 # Function to get user balance
 def get_user_balance(username):
-    user = users_collection.find_one({"username": username})
+    user = users.find_one({"username": username})
     if user:
         return user["balance"]
     else:
@@ -26,7 +19,7 @@ def get_user_balance(username):
 
 # Function to update user balance
 def update_user_balance(username, amount):
-    users_collection.update_one({"username": username}, {"$inc": {"balance": amount}})
+    users.update_one({"username": username}, {"$inc": {"balance": amount}})
 
 # Streamlit dashboard
 st.title("Dashboard")
