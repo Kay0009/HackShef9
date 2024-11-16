@@ -1,3 +1,3 @@
 # Hello
-This is the official hack sheffield 9 repository.
+This is the bureaucratic hack sheffield 9 repository.
 
