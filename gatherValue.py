@@ -57,7 +57,7 @@ def fetch_and_store_asset_values():
                 print(f"Symbol not found in asset: {asset}")
 
 # Schedule the task to run every minute
-schedule.every(1).second.do(fetch_and_store_asset_values)
+schedule.every(4).minutes.do(fetch_and_store_asset_values)
 
 # Keep the script running
 while True:
