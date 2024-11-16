@@ -2,9 +2,11 @@ import requests
 from dotenv import load_dotenv
 import os
 from datetime import datetime
-import schedule
 import time
 import json
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -18,6 +20,8 @@ headers = {
     "Content-Type": "application/json",
     "X-API-Key": api_key
 }
+
+database_uri = "mongodb+srv://freddy:1234@hackshef9.ukauu.mongodb.net/?retryWrites=true&w=majority&appName=HackShef9"
 
 # Function to fetch supported assets
 def fetch_supported_assets():
@@ -40,26 +44,39 @@ def fetch_asset_details(asset_str):
         print(f"Request failed with status code {response.status_code}: {response.text}")
         return None
 
-# Function to fetch and store asset values
-def fetch_and_store_asset_values():
+if __name__ == "__main__":
     supported_assets = fetch_supported_assets()
-    with open("coin_values.txt", "a") as file:
+
+    # Connect to the database
+    uri = "mongodb+srv://freddy:1234@hackshef9.ukauu.mongodb.net/?retryWrites=true&w=majority&appName=HackShef9"
+
+    # Create a new client and connect to the server
+    client = MongoClient(uri, server_api=ServerApi('1'))
+    # Send a ping to confirm a successful connection
+    try:
+        client.admin.command('ping')
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    except Exception as e:
+        print(e)
+
+    db = client["HackShef9"]
+    datapoints_collection = db["datapoints"]
+
+    while True:
         for asset in supported_assets:
             asset_symbol = asset.get('assetSymbol')
+
             if asset_symbol:
                 data = fetch_asset_details(asset_symbol)
                 if data:
                     latest_rate = data['data']['item']['latestRate']
                     price = float(latest_rate['amount'])
                     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    file.write(f"{timestamp}: {asset_symbol} - {price}\n")
-            else:
-                print(f"Symbol not found in asset: {asset}")
+                    print(price, asset_symbol, timestamp)
+                    datapoint = {"coin": asset_symbol, "value": price, "time": timestamp}
+                    datapoints_collection.insert_one(datapoint)
+                    print("Successfully added datapoint to the database")
+                else:
+                    print(f"Symbol not found in asset: {asset}")
 
-# Schedule the task to run every minute
-schedule.every(4).minutes.do(fetch_and_store_asset_values)
 
-# Keep the script running
-while True:
-    schedule.run_pending()
-    time.sleep(1)

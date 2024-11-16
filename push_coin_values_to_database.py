@@ -12,7 +12,6 @@ try:
 except Exception as e:
     print(e)
 
-
 db = client["HackShef9"]
 collection = db["datapoints"]
 
