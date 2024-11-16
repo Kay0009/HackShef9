@@ -1,4 +1,5 @@
 import requests
+import schedule
 from dotenv import load_dotenv
 import os
 from datetime import datetime
@@ -11,15 +12,27 @@ from pymongo.server_api import ServerApi
 # Load environment variables from .env file
 load_dotenv()
 
-# Access the API key
-api_key = os.getenv("API_KEY")
+# Access all API keys
+api_keys = [
+    os.getenv("API_KEY1"),
+    os.getenv("API_KEY2"),
+    os.getenv("API_KEY3"),
+    os.getenv("API_KEY4"),
+    os.getenv("API_KEY5"),
+    os.getenv("API_KEY6"),
+    os.getenv("API_KEY7")
+]
 
-# Define the API endpoint and headers
+# Function to get the next API key
+api_key_index = 0
+def get_next_api_key():
+    global api_key_index
+    api_key = api_keys[api_key_index]
+    api_key_index = (api_key_index + 1) % len(api_keys)
+    return api_key
+
+# Define the API endpoint
 base_url = "https://rest.cryptoapis.io/v2/market-data/assets"
-headers = {
-    "Content-Type": "application/json",
-    "X-API-Key": api_key
-}
 
 database_uri = "mongodb+srv://freddy:1234@hackshef9.ukauu.mongodb.net/?retryWrites=true&w=majority&appName=HackShef9"
 
@@ -33,6 +46,10 @@ def fetch_supported_assets():
 # Function to fetch asset details by asset symbol
 def fetch_asset_details(asset_str):
     url = f"{base_url}/{asset_str}"
+    headers = {
+        "Content-Type": "application/json",
+        "X-API-Key": get_next_api_key()
+    }
     response = requests.get(url, headers=headers)
     time.sleep(1.001)
 
@@ -62,7 +79,7 @@ if __name__ == "__main__":
     db = client["HackShef9"]
     datapoints_collection = db["datapoints"]
 
-    while True:
+    def fetch_and_store_data():
         for asset in supported_assets:
             asset_symbol = asset.get('assetSymbol')
 
@@ -79,4 +96,10 @@ if __name__ == "__main__":
                 else:
                     print(f"Symbol not found in asset: {asset}")
 
+    # Schedule the task to run every minute
+    schedule.every(4).minutes.do(fetch_and_store_data)
 
+    # Keep the script running
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
