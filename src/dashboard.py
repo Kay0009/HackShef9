@@ -4,8 +4,12 @@ from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
 import os
 
+<<<<<<< HEAD
 # Load environment variables from .env file
 load_dotenv()
+=======
+import common, database
+>>>>>>> c55f1d9 (Dataframe in streamlit)
 
 # Connect to MongoDB Atlas
 database_uri = "mongodb+srv://freddy:1234@hackshef9.ukauu.mongodb.net/?retryWrites=true&w=majority&appName=HackShef9"
@@ -44,3 +48,22 @@ if "username" in st.session_state:
         st.rerun()
 else:
     st.error("You need to login first.")
+
+coin_metadata = database.fetch_coin_metadata()
+
+for coin in coin_metadata:
+    coin["image_b64"] = "data:image/png;base64," + coin["image_b64"]
+
+st.dataframe(
+    coin_metadata, 
+    column_config={
+        "image_b64": st.column_config.ImageColumn("Image", width="small"),
+        "name": "Symbol",
+        "full_name": "Name",
+        "asset_id": "Asset ID"
+    },
+    column_order=("image_b64", "name", "full_name", "asset_id"),
+    height=int(60 * 29.8) # Idk why this works
+)
+
+common.footer()
