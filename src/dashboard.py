@@ -7,6 +7,7 @@ common.header()
 
 users = database.get_client()["users"]
 datapoints_collection = database.get_client()["datapoints"]
+investments_collection = database.get_client()["investments"]
 
 # Function to get user balance
 def get_user_balance(username):
@@ -29,7 +30,11 @@ def add_investment(username, coin, amount, value):
         "value": value,
         "timestamp": pd.Timestamp.now()
     }
-    database.get_client()["investments"].insert_one(investment)
+    investments_collection.insert_one(investment)
+
+# Function to get user investments
+def get_user_investments(username):
+    return list(investments_collection.find({"username": username}))
 
 # Streamlit dashboard
 st.title("Dashboard")
@@ -41,6 +46,18 @@ if "username" in st.session_state:
     if balance is not None:
         st.write(f"Hello, {username}!")
         st.write(f"Your balance is: ${balance:.2f} USD")
+
+        # Display user investments
+        investments = get_user_investments(username)
+        if investments:
+            st.subheader("Your Investments")
+            for investment in investments:
+                coin = investment["coin"]
+                amount = investment["amount"]
+                invested_value = investment["value"]
+                current_value = datapoints_collection.find_one({"coin": coin}, sort=[("timestamp", -1)])["value"]
+                current_worth = (amount / invested_value) * current_value
+                st.write(f"{coin}: Invested ${amount:.2f} at ${invested_value:.2f} per unit, Current worth: ${current_worth:.2f}")
 
         # Form to add funds
         st.subheader("Add Funds")
