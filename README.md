@@ -15,5 +15,5 @@ pip install -r requirements.txt
 
 ### Run streamlit
 ```
-streamlit run main.py
+streamlit run src/main.py
 ```
