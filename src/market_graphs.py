@@ -1,23 +1,10 @@
 import streamlit as st
-from pymongo import MongoClient
-from pymongo.server_api import ServerApi
-from dotenv import load_dotenv
 import pandas as pd
 import plotly.express as px
+import database
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Connect to MongoDB Atlas
-database_uri = "mongodb+srv://freddy:1234@hackshef9.ukauu.mongodb.net/?retryWrites=true&w=majority&appName=HackShef9"
-client = MongoClient(database_uri, server_api=ServerApi('1'))
-
-# Access the database and collection
-db = client["HackShef9"]
-datapoints_collection = db["datapoints"]
-
-# Fetch data from the collection
-data = list(datapoints_collection.find())
+# Fetch data from the collection using database.py
+data = database.fetch_coin_datapoints()
 
 # Convert data to a DataFrame
 df = pd.DataFrame(data)

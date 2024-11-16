@@ -1,6 +1,5 @@
 import streamlit as st
 import common
-import pandas as pd
 import database
 
 common.header()
@@ -44,9 +43,10 @@ if "username" in st.session_state:
                 coin = investment["coin"]
                 amount = investment["amount"]
                 invested_value = investment["value"]
-                current_value = datapoints_collection.find_one({"coin": coin}, sort=[("timestamp", -1)])["value"]
-                current_worth = (amount / invested_value) * current_value
-                st.write(f"{coin}: Invested ${amount:.2f} at ${invested_value:.7f} per unit, Current worth: ${current_worth:.2f}")
+                current_value = datapoints_collection.find_one({"coin": coin}, sort=[("time", -1)])["value"]
+                units = amount / invested_value
+                current_worth = units * current_value
+                st.write(f"{coin}: Invested USD ${amount:.2f} at ${invested_value:.7f} per unit, Current worth: ${current_worth:.2f}")
 
         # Form to add funds
         st.subheader("Add Funds")

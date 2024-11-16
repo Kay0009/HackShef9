@@ -44,9 +44,10 @@ if "username" in st.session_state:
                 coin = investment["coin"]
                 amount = investment["amount"]
                 invested_value = investment["value"]
-                current_value = datapoints_collection.find_one({"coin": coin}, sort=[("timestamp", -1)])["value"]
+                current_value = datapoints_collection.find_one({"coin": coin}, sort=[("time", -1)])["value"]
+                st.write(current_value)
                 current_worth = (amount / invested_value) * current_value
-                st.write(f"{coin}: Invested ${amount:.2f} at ${invested_value:.7f} per unit, Current worth: ${current_worth:.2f}")
+                st.write(f"{coin}: Invested USD ${amount:.2f} at ${invested_value:.7f} per unit, Current worth: ${current_worth:.2f} at ${current_value:.7f} per unit")
                 if st.button(f"Sell {coin}"):
                     update_user_balance(username, current_worth)
                     remove_investment(investment["_id"])

@@ -43,9 +43,9 @@ if "username" in st.session_state:
         st.subheader("Invest in a Coin")
         coins = datapoints_collection.distinct("coin")
         selected_coin = st.selectbox("Select a coin", coins)
-        coin_value = datapoints_collection.find_one({"coin": selected_coin}, sort=[("timestamp", -1)])["value"]
+        coin_value = datapoints_collection.find_one({"coin": selected_coin}, sort=[("time", -1)])["value"]
         st.write(f"Current value of {selected_coin}: ${coin_value:.7f} USD")
-        invest_amount = st.number_input("Amount to invest", min_value=0.0, step=0.01)
+        invest_amount = st.number_input("Amount to invest", min_value=0.0, step=10.0)
         if st.button("Invest"):
             if invest_amount <= balance:
                 update_user_balance(username, -invest_amount)
