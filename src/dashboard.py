@@ -49,6 +49,7 @@ if "username" in st.session_state:
                 coin = investment["coin"]
                 amount = investment["amount"]
                 invested_value = investment["value"]
+                investment_time = investment["timestamp"]
                 current_value = datapoints_collection.find_one({"coin": coin}, sort=[("time", -1)])["value"]
                 units = amount / invested_value
                 current_worth = units * current_value
@@ -62,6 +63,11 @@ if "username" in st.session_state:
 
                 # Create a line chart
                 fig = px.line(df, x='time', y='investment_value', title=f'{coin} Investment Value Over Time')
+
+                # Add a vertical line for the investment time
+                fig.add_vline(x=((investment_time.timestamp())*1000), line=dict(color='red', width=2),
+                              annotation_text=f'Invested: {investment_time}', annotation_position="top left")
+
                 st.plotly_chart(fig)
 
         # Form to add funds
