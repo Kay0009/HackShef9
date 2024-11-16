@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import matplotlib.pyplot as plt
 import pandas as pd
+from datetime import datetime, timedelta
 
 # Load environment variables from .env file
 load_dotenv()
@@ -31,6 +32,9 @@ def fetch_asset_details(asset_symbol):
     if response.status_code == 200:
         print(f"Request successful for asset symbol: {asset_symbol}")
         data = response.json()
+        # Write data to a text file
+        with open("coin_values.txt", "a") as file:
+            file.write(f"{datetime.now()}: {asset_symbol} - {data}\n")
         return data
     else:
         print(f"Request failed with status code {response.status_code}: {response.text}")
