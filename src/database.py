@@ -4,24 +4,23 @@ import itertools
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-uri = "mongodb+srv://freddy:1234@hackshef9.ukauu.mongodb.net/?retryWrites=true&w=majority&appName=HackShef9"
+@st.cache_resource
+def get_client():
+    uri = "mongodb+srv://freddy:1234@hackshef9.ukauu.mongodb.net/?retryWrites=true&w=majority&appName=HackShef9"
 
-# Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi('1'))
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
+    # Create a new client and connect to the server
+    client = MongoClient(uri, server_api=ServerApi('1'))
+    # Send a ping to confirm a successful connection
+    try:
+        client.admin.command('ping')
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    except Exception as e:
+        print(e)
 
-db = client["HackShef9"]
-coins_collection = db["coins"]
-datapoints_collection = db["datapoints"]
+    return client["HackShef9"]
 
-# @st.cache_resource
 def fetch_coin_metadata():
-    metadata = list(coins_collection.find({}, {'_id': False}))
+    metadata = list(get_client()["coins"].find({}, {'_id': False}))
 
     for coin in metadata:
         coin["image_b64"] = "data:image/png;base64," + coin["image_b64"]
@@ -29,7 +28,7 @@ def fetch_coin_metadata():
     return metadata
 
 def fetch_coin_datapoints():
-    return list(datapoints_collection.find({}))
+    return list(get_client()["datapoints"].find({}))
 
 def fetch_joined_coin_datapoints():
     metadata = fetch_coin_metadata()

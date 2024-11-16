@@ -8,7 +8,9 @@ pg = st.navigation(
         st.Page("dashboard.py"),
         st.Page("markets.py"),
         st.Page("signup.py"),
-        st.Page("login.py")
+        st.Page("login.py"),
+        st.Page("just_try_to_cashout.py"),
+        st.Page("market_graphs.py")
     ]
 )
 
