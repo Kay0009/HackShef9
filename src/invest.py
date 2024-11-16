@@ -44,13 +44,13 @@ if "username" in st.session_state:
         coins = datapoints_collection.distinct("coin")
         selected_coin = st.selectbox("Select a coin", coins)
         coin_value = datapoints_collection.find_one({"coin": selected_coin}, sort=[("timestamp", -1)])["value"]
-        st.write(f"Current value of {selected_coin}: ${coin_value:.2f} USD")
+        st.write(f"Current value of {selected_coin}: ${coin_value:.7f} USD")
         invest_amount = st.number_input("Amount to invest", min_value=0.0, step=0.01)
         if st.button("Invest"):
             if invest_amount <= balance:
                 update_user_balance(username, -invest_amount)
                 add_investment(username, selected_coin, invest_amount, coin_value)
-                st.success(f"Invested ${invest_amount:.2f} in {selected_coin} at ${coin_value:.2f} per unit.")
+                st.success(f"Invested ${invest_amount:.2f} in {selected_coin} at ${coin_value:.7f} per unit.")
                 st.rerun()
             else:
                 st.error("Insufficient balance.")

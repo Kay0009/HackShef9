@@ -46,11 +46,11 @@ if "username" in st.session_state:
                 invested_value = investment["value"]
                 current_value = datapoints_collection.find_one({"coin": coin}, sort=[("timestamp", -1)])["value"]
                 current_worth = (amount / invested_value) * current_value
-                st.write(f"{coin}: Invested ${amount:.2f} at ${invested_value:.2f} per unit, Current worth: ${current_worth:.2f}")
+                st.write(f"{coin}: Invested ${amount:.2f} at ${invested_value:.7f} per unit, Current worth: ${current_worth:.2f}")
                 if st.button(f"Sell {coin}"):
                     update_user_balance(username, current_worth)
                     remove_investment(investment["_id"])
-                    st.success(f"Sold {coin} for ${current_worth:.2f}.")
+                    st.success(f"Sold {coin} for ${current_worth:.7f}.")
                     st.rerun()
     else:
         st.error("User not found.")
