@@ -21,11 +21,20 @@ st.header("Our Values")
 st.write("At Pump & Dump Partners, we believe that every investment should start and end with you.")
 
 st.header("Our Reviews")
-st.write("Karen - 69 years old")
-st.write("I invested my life savings in JeffCoin and now I'm broke. Thanks Pump & Dump Partners!")
-st.write("John - 42 years old")
-st.write("I invested my life savings in Doge and now I'm broke. Thanks Pump & Dump Partners!")
-st.write("Jane - 35 years old")
-st.write("I invested my life savings in Hello Coin and now I'm broke. Thanks Pump & Dump Partners!")
+st.write("We always deliver at Pump & Dump Partners, that's why we have hundreds of positive comments about our sevices.")
+st.write("But don't let us tell you, have a look for yourself!")
+st.markdown('''
+> I invested my life savings in JeffCoin and now I'm broke. Thanks Pump & Dump Partners!
+>
+> *Karen, 69*
+
+> I invested my life savings in Doge and now I'm broke. Thanks Pump & Dump Partners!
+>
+> *John, 42*
+
+> I invested my life savings in Hello Coin and now I'm broke. Thanks Pump & Dump Partners!
+>
+> *Jane, 35*
+''')
 
 common.footer()
