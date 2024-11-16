@@ -8,7 +8,7 @@
     {"assetId": "6307400a2e101367e7f9af81", "assetName": "Dogecoin", "assetSymbol": "DOGE", "assetType": "crypto", "originalSymbol": "DOGE"},
     {"assetId": "6319dd01f992dc4bc4e647af", "assetName": "USD Coin", "assetSymbol": "USDC", "assetType": "crypto", "originalSymbol": "USDC"},
     {"assetId": "64b67757fd07ee394ffe2fb0", "assetName": "Lido Staked ETH", "assetSymbol": "stETH", "assetType": "crypto", "originalSymbol": "stETH"},
-    {"assetId": "632aef5962aa4a7254521482", "assetName": "Cardano", "assetSymbol": "ADA", "assetType": "crypto", "originalSymbol": "ADA"}
+    {"assetId": "632aef5962aa4a7254521482", "assetName": "Cardano", "assetSymbol": "ADA", "assetType": "crypto", "originalSymbol": "ADA"},
     {'assetId': '630629f84e66ce0983f2cd4e', 'assetName': 'Bitcoin', 'assetSymbol': 'BTC', 'assetType': 'crypto', 'originalSymbol': 'BTC'}, 
     {'assetId': '630629da4e66ce0983f2cd4d', 'assetName': 'Ethereum', 'assetSymbol': 'ETH', 'assetType': 'crypto', 'originalSymbol': 'ETH'}, 
     {'assetId': '6306352b3290940c0e34eb1e', 'assetName': 'Tether', 'assetSymbol': 'USDT', 'assetType': 'crypto', 'originalSymbol': 'USDT'}, 
