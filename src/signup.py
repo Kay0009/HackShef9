@@ -5,7 +5,7 @@ import os
 users = database.get_client()["users"]
 
 # Streamlit signup form
-st.title("Signup Form")
+st.title("Sign Up")
 
 current_dir = os.path.dirname(__file__)
 image_path = os.path.join(current_dir, "images", "voyageofgains.jpeg")
