@@ -1,13 +1,15 @@
 import streamlit as st
-from pymongo import MongoClient
-from pymongo.server_api import ServerApi
-import os
 import database
+import os
 
 users = database.get_client()["users"]
 
 # Streamlit signup form
 st.title("Signup Form")
+
+current_dir = os.path.dirname(__file__)
+image_path = os.path.join(current_dir, "images", "voyageofgains.jpeg")
+st.image(image_path, caption="Gain voyage", use_container_width=True)
 
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
