@@ -6,7 +6,7 @@ import os
 import database
 
 # Streamlit login form
-st.title("Login Form")
+st.title("Log In")
 
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
