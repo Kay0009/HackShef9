@@ -50,7 +50,12 @@ if "username" in st.session_state:
                 current_value = datapoints_collection.find_one({"coin": coin}, sort=[("time", -1)])["value"]
                 units = amount / invested_value
                 current_worth = units * current_value
-                st.write(f"{coin}: Invested USD ${amount:.2f} at ${invested_value:.7f} per unit, Current worth: ${current_worth:.2f}")
+                investment_change = current_worth - amount
+
+                st.markdown(f"#### {coin} Investment")
+                st.write(f"Invested \${amount:.2f} USD worth {units:.7f} {coin}")
+                st.write(f"{invested_value:.2f} USD per unit")
+                st.metric(coin, f"Current worth: {current_worth:.2f} USD", f"{investment_change:.2f} USD")
 
                 # Fetch coin data points
                 coin_data = fetch_coin_data(coin)
