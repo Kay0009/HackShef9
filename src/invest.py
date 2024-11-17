@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import database
+import plotly.express as px
 
 users = database.get_client()["users"]
 datapoints_collection = database.get_client()["datapoints"]
@@ -43,7 +44,12 @@ if "username" in st.session_state:
         st.subheader("Invest in a Coin")
         coins = datapoints_collection.distinct("coin")
         selected_coin = st.selectbox("Select a coin", coins)
-        coin_value = datapoints_collection.find_one({"coin": selected_coin}, sort=[("time", -1)])["value"]
+        
+        coin_data = list(datapoints_collection.find({"coin": selected_coin}, sort=[("time", -1)]))
+        coin_value = coin_data[-1]["value"]
+
+        st.plotly_chart(px.line(coin_data, x="time", y="value", title=f"Exchange rate of {selected_coin} over")) 
+
         st.write(f"Current value of {selected_coin}: ${coin_value:.7f} USD")
         invest_amount = st.number_input("Amount to invest", min_value=0.0, step=10.0)
         if st.button("Invest"):
