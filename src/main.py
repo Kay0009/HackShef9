@@ -7,8 +7,8 @@ st.set_page_config(
 
 # Set the absolute path to the image
 current_dir = os.path.dirname(__file__)
-image_path = os.path.join(current_dir, "images", "rad.jpeg")
-st.sidebar.image(image_path, caption="you rn", use_container_width=True)
+image_path = os.path.join(current_dir, "images", "shibacoin.png")
+st.sidebar.image(image_path, "Pump and Dump Partners", use_container_width=True)
 
 
 pg = st.navigation(
