@@ -18,6 +18,7 @@ if st.button("Login"):
         user = database.get_client()["users"].find_one({"username": username, "password": password})
         if user:
             st.session_state["username"] = username
+            st.rerun()
             st.success("Login successful!")
         else:
             st.error("Invalid username or password.")
