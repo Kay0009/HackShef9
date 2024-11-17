@@ -1,10 +1,7 @@
 import streamlit as st
-import common
 import database
 import pandas as pd
 import plotly.express as px
-
-common.header()
 
 users = database.get_client()["users"]
 datapoints_collection = database.get_client()["datapoints"]
@@ -86,5 +83,3 @@ if "username" in st.session_state:
         st.rerun()
 else:
     st.error("You need to login first.")
-
-common.footer()
