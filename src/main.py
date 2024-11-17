@@ -14,7 +14,6 @@ pg = st.navigation(
         st.Page("signup.py", title="Sign Up"),
         st.Page("login.py", title="Log In"),
         st.Page("just_try_to_cashout.py", title="Cashout"),
-        st.Page("market_graphs.py", title="Market Graphs")
     ]
 )
 
