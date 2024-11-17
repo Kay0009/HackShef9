@@ -9,7 +9,11 @@ for coin in coin_data:
     coin["exchange"] = coin["datapoints"][-1]["value"]
     coin["trend"] = [datapoint["value"] for datapoint in coin["datapoints"][-100:]]
 
+coin_data = sorted(coin_data, key=lambda x: x["exchange"])
+
 st.title("Markets")
+st.write("Check out the most stagnant and failing markets here.")
+st.write("Our analysts recommend that new investors start with coins with an evaluation less than 1 USD.")
 
 st.dataframe(
     coin_data, 
