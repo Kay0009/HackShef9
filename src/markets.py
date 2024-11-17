@@ -3,6 +3,10 @@ import streamlit as st
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 
+st.title("Markets")
+st.write("Check out the most stagnant and failing markets here.")
+st.write("Our analysts recommend that new investors start with coins with an evaluation less than 1 USD.")
+
 coin_data = database.fetch_joined_coin_datapoints()
 
 for coin in coin_data:
@@ -10,10 +14,6 @@ for coin in coin_data:
     coin["trend"] = [datapoint["value"] for datapoint in coin["datapoints"][-100:]]
 
 coin_data = sorted(coin_data, key=lambda x: x["exchange"])
-
-st.title("Markets")
-st.write("Check out the most stagnant and failing markets here.")
-st.write("Our analysts recommend that new investors start with coins with an evaluation less than 1 USD.")
 
 st.dataframe(
     coin_data, 
